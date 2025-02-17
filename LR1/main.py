@@ -162,9 +162,6 @@ class Window1:
         Window4(self.root, self.set_a, self.set_b)
     def open_window5(self): pass
 
-import tkinter as tk
-import functions  # Припускаю, що тут визначено `calculate_default_expression`
-
 class Window2:
     def __init__(self, root, set_a, set_b, set_c):
         self.root = root
@@ -181,8 +178,8 @@ class Window2:
         self.label_D = tk.Label(self.window, text="D: {}")
         self.label_D.pack(pady=10)
 
-        self.labels = []  # Список для міток кроків
-        for i in range(1, 6):  # У нас 5 кроків
+        self.labels = []  
+        for i in range(1, 6):  
             frame = tk.Frame(self.window)
             frame.pack()
 
@@ -190,7 +187,7 @@ class Window2:
             step_label.pack(side="left")
 
             result_label = tk.Label(frame, text="Result ")
-            result_label.pack(side="left", padx=10)
+            result_label.pack(side="left")
 
             self.labels.append(result_label)  
 
@@ -205,7 +202,6 @@ class Window2:
             stepResult = next(self.calculator)  
             self.result_d = stepResult
 
-            
             if self.step < len(self.labels):
                 self.labels[self.step].config(text=f"{stepResult}")
                 self.step += 1  
