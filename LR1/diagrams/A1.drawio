@@ -1,0 +1,31 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36" version="25.0.3">
+  <diagram name="Сторінка-1" id="mTds1hTLxsTieXeva0RW">
+    <mxGraphModel dx="683" dy="368" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="GnYPmAXC_PbdJZZAp4o2-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="GnYPmAXC_PbdJZZAp4o2-1" target="GnYPmAXC_PbdJZZAp4o2-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GnYPmAXC_PbdJZZAp4o2-1" value="Початок" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="140" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="GnYPmAXC_PbdJZZAp4o2-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="GnYPmAXC_PbdJZZAp4o2-2" target="GnYPmAXC_PbdJZZAp4o2-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GnYPmAXC_PbdJZZAp4o2-2" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;Введення A, B, C&lt;/font&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="135" y="200" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="GnYPmAXC_PbdJZZAp4o2-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="GnYPmAXC_PbdJZZAp4o2-4" target="GnYPmAXC_PbdJZZAp4o2-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="GnYPmAXC_PbdJZZAp4o2-4" value="temp1 = A \ B" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="137.5" y="260" width="115" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="GnYPmAXC_PbdJZZAp4o2-5" value="temp2 = B&amp;nbsp;&lt;span style=&quot;color: rgb(232, 232, 232); font-family: &amp;quot;Google Sans&amp;quot;, Arial, sans-serif; font-size: 16px; text-align: left; background-color: rgb(16, 18, 24);&quot;&gt;∧&amp;nbsp;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="137.5" y="320" width="115" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
