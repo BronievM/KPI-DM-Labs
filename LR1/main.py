@@ -189,7 +189,7 @@ class Window2:
         self.save_button.pack(pady=10)
 
     def calculate_step_by_step(self):
-            gen = calc_steps(self.set_a, self.set_b, self.set_c) 
+            gen = functions.calc_steps(self.set_a, self.set_b, self.set_c) 
             self.label_step1.config(text=f"{next(gen)}")
             self.label_D.config(text=f"D: {self.result_d}")
             
