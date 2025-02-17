@@ -179,27 +179,27 @@ class Window2:
         self.label_D = tk.Label(self.window, text="D: {}")
         self.label_D.pack(pady=10)
 
-        self.label_step1 = tk.Label(self.window, text="Крок 1: A \\ B = ")
+        self.label_step1 = tk.Label(self.window, text="Крок 1: A \\ B")
         self.label_step1.pack(anchor="center")
         self.label_step1_res = tk.Label(self.window, text="Результат буде тут", fg="blue")
         self.label_step1_res.pack(anchor="center")
 
-        self.label_step2 = tk.Label(self.window, text="Крок 2: B ∩ A = ")
+        self.label_step2 = tk.Label(self.window, text="Крок 2: B ∩ A")
         self.label_step2.pack(anchor="center")
         self.label_step2_res = tk.Label(self.window, text="Результат буде тут", fg="blue")
         self.label_step2_res.pack(anchor="center")
 
-        self.label_step3 = tk.Label(self.window, text="Крок 3: (A \\ B) ∪ (B ∩ A) = ")
+        self.label_step3 = tk.Label(self.window, text="Крок 3: (A \\ B) ∪ (B ∩ A)")
         self.label_step3.pack(anchor="center")
         self.label_step3_res = tk.Label(self.window, text="Результат буде тут", fg="blue")
         self.label_step3_res.pack(anchor="center")
 
-        self.label_step4 = tk.Label(self.window, text="Крок 4: C ∪ B = ")
+        self.label_step4 = tk.Label(self.window, text="Крок 4: C ∪ B")
         self.label_step4.pack(anchor="center")
         self.label_step4_res = tk.Label(self.window, text="Результат буде тут", fg="blue")
         self.label_step4_res.pack(anchor="center")
 
-        self.label_step5 = tk.Label(self.window, text="Крок 5: ((A \\ B) ∪ (B ∩ A)) \\ (C ∪ B) = ")
+        self.label_step5 = tk.Label(self.window, text="Крок 5: ((A \\ B) ∪ (B ∩ A)) \\ (C ∪ B)")
         self.label_step5.pack(anchor="center")
         self.label_step5_res = tk.Label(self.window, text="Результат буде тут", fg="blue")
         self.label_step5_res.pack(anchor="center")
