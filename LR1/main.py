@@ -170,6 +170,8 @@ class Window2:
         self.set_c = set_c
         self.step = 0
         self.result_d = set()
+        self.calculator =  functions.calculate_simplified_expression(self.set_a, self.set_b, self.set_c)
+        
 
         self.window = tk.Toplevel(self.root)
         self.window.title("Вікно #2")
@@ -189,8 +191,7 @@ class Window2:
         self.save_button.pack(pady=10)
 
     def calculate_step_by_step(self):
-            gen = functions.calculate_simplified_expression(self.set_a, self.set_b, self.set_c)
-            stepResult = next(gen)
+            stepResult = next(self.calculator)
             self.result_d = stepResult
             self.label_step1.config(text=f"{stepResult}")
             self.label_D.config(text=f"D: {self.result_d}")
