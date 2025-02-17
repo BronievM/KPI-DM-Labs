@@ -178,9 +178,9 @@ class Window2:
         self.label_D.pack(pady=10)
 
         self.label_step1 = tk.Label(self.window, text="Крок 1: ")
-        self.label_operands.pack()
+        self.label_step1.pack()
         self.label_step1_res = tk.Label(self.window, text="Result ")
-        self.label_operands.pack(pady=10)
+        self.label_step1_res.pack(pady=10)
 
         self.calculate_button = tk.Button(self.window, text="Обчислити", command=self.calculate_step_by_step)
         self.calculate_button.pack(pady=10)
