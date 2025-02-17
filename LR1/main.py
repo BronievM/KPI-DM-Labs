@@ -178,18 +178,30 @@ class Window2:
         self.label_D = tk.Label(self.window, text="D: {}")
         self.label_D.pack(pady=10)
 
-        self.labels = []  
-        for i in range(1, 6):  
-            frame = tk.Frame(self.window)
-            frame.pack()
+        self.label_step1 = tk.Label(self.window, text="Крок 1: A - B = ")
+        self.label_step1.pack()
+        self.label_step1_res = tk.Label(self.window, text="Result", fg="blue")
+        self.label_step1_res.pack(pady=5)
 
-            step_label = tk.Label(frame, text=f"Крок {i}:")
-            step_label.pack(side="left")
+        self.label_step2 = tk.Label(self.window, text="Крок 2: B ∩ A = ")
+        self.label_step2.pack()
+        self.label_step2_res = tk.Label(self.window, text="Result", fg="blue")
+        self.label_step2_res.pack(pady=5)
 
-            result_label = tk.Label(frame, text="Result ")
-            result_label.pack(side="left")
+        self.label_step3 = tk.Label(self.window, text="Крок 3: (A - B) ∪ (B ∩ A) = ")
+        self.label_step3.pack()
+        self.label_step3_res = tk.Label(self.window, text="Result", fg="blue")
+        self.label_step3_res.pack(pady=5)
 
-            self.labels.append(result_label)  
+        self.label_step4 = tk.Label(self.window, text="Крок 4: C ∪ B = ")
+        self.label_step4.pack()
+        self.label_step4_res = tk.Label(self.window, text="Result", fg="blue")
+        self.label_step4_res.pack(pady=5)
+
+        self.label_step5 = tk.Label(self.window, text="Крок 5: ((A - B) ∪ (B ∩ A)) - (C ∪ B) = ")
+        self.label_step5.pack()
+        self.label_step5_res = tk.Label(self.window, text="Result", fg="blue")
+        self.label_step5_res.pack(pady=5)
 
         self.calculate_button = tk.Button(self.window, text="Обчислити", command=self.calculate_step_by_step)
         self.calculate_button.pack(pady=10)
@@ -202,10 +214,18 @@ class Window2:
             stepResult = next(self.calculator)  
             self.result_d = stepResult
 
-            if self.step < len(self.labels):
-                self.labels[self.step].config(text=f"{stepResult}")
-                self.step += 1  
+            if self.step == 0:
+                self.label_step1_res.config(text=f"{stepResult}")
+            elif self.step == 1:
+                self.label_step2_res.config(text=f"{stepResult}")
+            elif self.step == 2:
+                self.label_step3_res.config(text=f"{stepResult}")
+            elif self.step == 3:
+                self.label_step4_res.config(text=f"{stepResult}")
+            elif self.step == 4:
+                self.label_step5_res.config(text=f"{stepResult}")
 
+            self.step += 1  
             self.label_D.config(text=f"D: {self.result_d}")  
 
         except StopIteration:
