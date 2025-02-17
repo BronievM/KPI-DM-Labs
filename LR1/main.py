@@ -177,7 +177,9 @@ class Window2:
         self.label_D = tk.Label(self.window, text="D: {}")
         self.label_D.pack(pady=10)
 
-        self.label_operands = tk.Label(self.window, text="Операнди: ")
+        self.label_step1 = tk.Label(self.window, text="Крок 1: ")
+        self.label_operands.pack()
+        self.label_step1_res = tk.Label(self.window, text="Result ")
         self.label_operands.pack(pady=10)
 
         self.calculate_button = tk.Button(self.window, text="Обчислити", command=self.calculate_step_by_step)
@@ -187,16 +189,11 @@ class Window2:
         self.save_button.pack(pady=10)
 
     def calculate_step_by_step(self):
-        if self.step == 0:
-            self.result_d = self.set_a & self.set_b  # Intersection
-            self.label_operands.config(text=f"Операнди: A = {self.set_a}, B = {self.set_b}")
+            gen = calc_steps(self.set_a, self.set_b, self.set_c) 
+            self.label_step1.config(text=f"{next(gen)}")
             self.label_D.config(text=f"D: {self.result_d}")
-            self.step += 1
-        elif self.step == 1:
-            self.result_d = self.result_d | self.set_c  # Union with C
-            self.label_operands.config(text=f"Операнди: D = {self.result_d}, C = {self.set_c}")
-            self.label_D.config(text=f"D: {self.result_d}")
-            self.step += 1
+            
+ 
 
 
     def save_result(self):
