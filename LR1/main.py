@@ -157,7 +157,8 @@ class Window1:
     def open_window2(self):
         Window2(self.root, self.set_a, self.set_b, self.set_c)
 
-    def open_window3(self): pass
+    def open_window3(self):
+        Window3(self.root, self.set_a, self.set_b, self.set_c)
     def open_window4(self):
         Window4(self.root, self.set_a, self.set_b)
     def open_window5(self): pass
@@ -178,30 +179,30 @@ class Window2:
         self.label_D = tk.Label(self.window, text="D: {}")
         self.label_D.pack(pady=10)
 
-        self.label_step1 = tk.Label(self.window, text="Крок 1: A - B = ")
-        self.label_step1.pack()
-        self.label_step1_res = tk.Label(self.window, text="Result", fg="blue")
-        self.label_step1_res.pack(pady=5)
+        self.label_step1 = tk.Label(self.window, text="Крок 1: A \\ B = ")
+        self.label_step1.pack(anchor="center")
+        self.label_step1_res = tk.Label(self.window, text="Результат буде тут", fg="blue")
+        self.label_step1_res.pack(anchor="center")
 
         self.label_step2 = tk.Label(self.window, text="Крок 2: B ∩ A = ")
-        self.label_step2.pack()
-        self.label_step2_res = tk.Label(self.window, text="Result", fg="blue")
-        self.label_step2_res.pack(pady=5)
+        self.label_step2.pack(anchor="center")
+        self.label_step2_res = tk.Label(self.window, text="Результат буде тут", fg="blue")
+        self.label_step2_res.pack(anchor="center")
 
-        self.label_step3 = tk.Label(self.window, text="Крок 3: (A - B) ∪ (B ∩ A) = ")
-        self.label_step3.pack()
-        self.label_step3_res = tk.Label(self.window, text="Result", fg="blue")
-        self.label_step3_res.pack(pady=5)
+        self.label_step3 = tk.Label(self.window, text="Крок 3: (A \\ B) ∪ (B ∩ A) = ")
+        self.label_step3.pack(anchor="center")
+        self.label_step3_res = tk.Label(self.window, text="Результат буде тут", fg="blue")
+        self.label_step3_res.pack(anchor="center")
 
         self.label_step4 = tk.Label(self.window, text="Крок 4: C ∪ B = ")
-        self.label_step4.pack()
-        self.label_step4_res = tk.Label(self.window, text="Result", fg="blue")
-        self.label_step4_res.pack(pady=5)
+        self.label_step4.pack(anchor="center")
+        self.label_step4_res = tk.Label(self.window, text="Результат буде тут", fg="blue")
+        self.label_step4_res.pack(anchor="center")
 
-        self.label_step5 = tk.Label(self.window, text="Крок 5: ((A - B) ∪ (B ∩ A)) - (C ∪ B) = ")
-        self.label_step5.pack()
-        self.label_step5_res = tk.Label(self.window, text="Result", fg="blue")
-        self.label_step5_res.pack(pady=5)
+        self.label_step5 = tk.Label(self.window, text="Крок 5: ((A \\ B) ∪ (B ∩ A)) \\ (C ∪ B) = ")
+        self.label_step5.pack(anchor="center")
+        self.label_step5_res = tk.Label(self.window, text="Результат буде тут", fg="blue")
+        self.label_step5_res.pack(anchor="center")
 
         self.calculate_button = tk.Button(self.window, text="Обчислити", command=self.calculate_step_by_step)
         self.calculate_button.pack(pady=10)
@@ -211,25 +212,88 @@ class Window2:
 
     def calculate_step_by_step(self):
         try:
-            stepResult = next(self.calculator)  
-            self.result_d = stepResult
+            step_result = next(self.calculator)
+
+            if not step_result:
+                step_result = "{}"
 
             if self.step == 0:
-                self.label_step1_res.config(text=f"{stepResult}")
+                self.label_step1_res.config(text=f"{step_result}")
             elif self.step == 1:
-                self.label_step2_res.config(text=f"{stepResult}")
+                self.label_step2_res.config(text=f"{step_result}")
             elif self.step == 2:
-                self.label_step3_res.config(text=f"{stepResult}")
+                self.label_step3_res.config(text=f"{step_result}")
             elif self.step == 3:
-                self.label_step4_res.config(text=f"{stepResult}")
+                self.label_step4_res.config(text=f"{step_result}")
             elif self.step == 4:
-                self.label_step5_res.config(text=f"{stepResult}")
+                self.label_step5_res.config(text=f"{step_result}")
+                self.result_d = step_result
+                self.label_D.config(text=f"D: {self.result_d}")
+                self.calculate_button.config(state=tk.DISABLED)
 
-            self.step += 1  
-            self.label_D.config(text=f"D: {self.result_d}")  
+            self.step += 1
 
         except StopIteration:
-            self.calculate_button.config(state=tk.DISABLED) 
+            self.calculate_button.config(state=tk.DISABLED)
+
+    def save_result(self):
+        file_path = filedialog.asksaveasfilename(defaultextension="result-simplified-D.txt",
+                                                 filetypes=[("Текстові файли", "*.txt"), ("Усі файли", "*.*")])
+        if file_path:
+            file_path.write(f"Результат спрощеного обчислення D: {self.result_d}")
+            file_path.close()
+
+class Window3:
+    def __init__(self, root, set_a, set_b, set_c):
+        self.root = root
+        self.set_a = set_a
+        self.set_b = set_b
+        self.set_c = set_c
+        self.step = 0
+        self.result_d = set()
+        self.calculator = functions.calculate_simplified_expression(self.set_a, self.set_b, self.set_c)
+
+        self.window = tk.Toplevel(self.root)
+        self.window.title("Вікно #3")
+
+        self.label_D = tk.Label(self.window, text="D: {}")
+        self.label_D.pack(pady=10)
+
+        self.label_step1 = tk.Label(self.window, text="Крок 1: C ∪ B")
+        self.label_step1.pack(anchor="center")
+        self.label_step1_res = tk.Label(self.window, text="Результат буде тут", fg="blue")
+        self.label_step1_res.pack(anchor="center")
+
+        self.label_step2 = tk.Label(self.window, text="Крок 2: A \\ (C ∪ B) = ")
+        self.label_step2.pack(anchor="center")
+        self.label_step2_res = tk.Label(self.window, text="Результат буде тут", fg="blue")
+        self.label_step2_res.pack(anchor="center")
+
+        self.calculate_button = tk.Button(self.window, text="Обчислити", command=self.calculate_step_by_step)
+        self.calculate_button.pack(pady=10)
+
+        self.save_button = tk.Button(self.window, text="Зберегти результат", command=self.save_result)
+        self.save_button.pack(pady=10)
+
+    def calculate_step_by_step(self):
+        try:
+            step_result = next(self.calculator)
+
+            if not step_result:
+                step_result = "{}"
+
+            if self.step == 0:
+                self.label_step1_res.config(text=f"{step_result}")
+            elif self.step == 1:
+                self.label_step2_res.config(text=f"{step_result}")
+                self.result_d = step_result
+                self.label_D.config(text=f"D: {self.result_d}")
+                self.calculate_button.config(state=tk.DISABLED)
+
+            self.step += 1
+
+        except StopIteration:
+            self.calculate_button.config(state=tk.DISABLED)
 
     def save_result(self):
         file_path = filedialog.asksaveasfilename(defaultextension="result-D.txt",
@@ -237,6 +301,7 @@ class Window2:
         if file_path:
             file_path.write(f"Результат обчислення D: {self.result_d}")
             file_path.close()
+
 
 class Window4:
     def __init__(self, root, set_x, set_y):
