@@ -190,7 +190,9 @@ class Window2:
 
     def calculate_step_by_step(self):
             gen = functions.calc_steps(self.set_a, self.set_b, self.set_c) 
-            self.label_step1.config(text=f"{next(gen)}")
+            stepResult = next(gen)
+            self.result_d = stepResult
+            self.label_step1.config(text=f"{stepResult}")
             self.label_D.config(text=f"D: {self.result_d}")
             
  
