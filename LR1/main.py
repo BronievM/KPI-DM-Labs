@@ -162,6 +162,9 @@ class Window1:
         Window4(self.root, self.set_a, self.set_b)
     def open_window5(self): pass
 
+import tkinter as tk
+import functions  # Припускаю, що тут визначено `calculate_default_expression`
+
 class Window2:
     def __init__(self, root, set_a, set_b, set_c):
         self.root = root
@@ -170,8 +173,7 @@ class Window2:
         self.set_c = set_c
         self.step = 0
         self.result_d = set()
-        self.calculator =  functions.calculate_simplified_expression(self.set_a, self.set_b, self.set_c)
-        
+        self.calculator = functions.calculate_default_expression(self.set_a, self.set_b, self.set_c)
 
         self.window = tk.Toplevel(self.root)
         self.window.title("Вікно #2")
@@ -179,10 +181,18 @@ class Window2:
         self.label_D = tk.Label(self.window, text="D: {}")
         self.label_D.pack(pady=10)
 
-        self.label_step1 = tk.Label(self.window, text="Крок 1: ")
-        self.label_step1.pack()
-        self.label_step1_res = tk.Label(self.window, text="Result ")
-        self.label_step1_res.pack(pady=10)
+        self.labels = []  # Список для міток кроків
+        for i in range(1, 6):  # У нас 5 кроків
+            frame = tk.Frame(self.window)
+            frame.pack()
+
+            step_label = tk.Label(frame, text=f"Крок {i}:")
+            step_label.pack(side="left")
+
+            result_label = tk.Label(frame, text="Result ")
+            result_label.pack(side="left", padx=10)
+
+            self.labels.append(result_label)  
 
         self.calculate_button = tk.Button(self.window, text="Обчислити", command=self.calculate_step_by_step)
         self.calculate_button.pack(pady=10)
@@ -191,13 +201,19 @@ class Window2:
         self.save_button.pack(pady=10)
 
     def calculate_step_by_step(self):
-            stepResult = next(self.calculator)
+        try:
+            stepResult = next(self.calculator)  
             self.result_d = stepResult
-            self.label_step1.config(text=f"{stepResult}")
-            self.label_D.config(text=f"D: {self.result_d}")
-            
- 
 
+            
+            if self.step < len(self.labels):
+                self.labels[self.step].config(text=f"{stepResult}")
+                self.step += 1  
+
+            self.label_D.config(text=f"D: {self.result_d}")  
+
+        except StopIteration:
+            self.calculate_button.config(state=tk.DISABLED) 
 
     def save_result(self):
         file_path = filedialog.asksaveasfilename(defaultextension="result-D.txt",
