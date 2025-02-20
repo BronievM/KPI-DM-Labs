@@ -117,10 +117,10 @@ class Window1:
         self.entry_c.insert(0, "4")
 
         tk.Label(frame, text="Діапазон чисел:").grid(row=3, column=0, pady=10)
-        self.entry_range_min = tk.Entry(frame, width=5)
+        self.entry_range_min = tk.Entry(frame, width=10)
         self.entry_range_min.grid(row=3, column=1)
         self.entry_range_min.insert(0, "0")
-        self.entry_range_max = tk.Entry(frame, width=5)
+        self.entry_range_max = tk.Entry(frame, width=10)
         self.entry_range_max.grid(row=3, column=2)
         self.entry_range_max.insert(0, "10")
 
@@ -161,7 +161,8 @@ class Window1:
         Window3(self.root, self.set_a, self.set_b, self.set_c)
     def open_window4(self):
         Window4(self.root, self.set_a, self.set_b)
-    def open_window5(self): pass
+    def open_window5(self):
+        Window5(self.root, self.set_a, self.set_b)
 
 class Window2:
     def __init__(self, root, set_a, set_b, set_c):
@@ -237,11 +238,10 @@ class Window2:
             self.calculate_button.config(state=tk.DISABLED)
 
     def save_result(self):
-        file_path = filedialog.asksaveasfilename(defaultextension="result-simplified-D.txt",
-                                                 filetypes=[("Текстові файли", "*.txt"), ("Усі файли", "*.*")])
+        file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
         if file_path:
-            file_path.write(f"Результат спрощеного обчислення D: {self.result_d}")
-            file_path.close()
+            with open(file_path, "w") as file:
+                file.write(f"Результат обчислення D: {self.result_d}")
 
 class Window3:
     def __init__(self, root, set_a, set_b, set_c):
@@ -296,11 +296,10 @@ class Window3:
             self.calculate_button.config(state=tk.DISABLED)
 
     def save_result(self):
-        file_path = filedialog.asksaveasfilename(defaultextension="result-D.txt",
-                                                 filetypes=[("Текстові файли", "*.txt"), ("Усі файли", "*.*")])
+        file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
         if file_path:
-            file_path.write(f"Результат обчислення D: {self.result_d}")
-            file_path.close()
+            with open(file_path, "w") as file:
+                file.write(f"Результат спрощеного обчислення D: {self.result_d}")
 
 
 class Window4:
@@ -308,6 +307,7 @@ class Window4:
         self.root = root
         self.set_x = set_x
         self.set_y = set_y
+        self.result_z = set()
 
         self.window = tk.Toplevel(self.root)
         self.window.title("Вікно #4")
@@ -324,11 +324,99 @@ class Window4:
         self.calculate_button = tk.Button(self.window, text="Обчислити Z", command=self.calculate_z)
         self.calculate_button.pack()
 
-
+        self.save_z_button = tk.Button(self.window, text ="Зберегти Z до файлу", command=self.save_z)
+        self.save_z_button.pack()
 
     def calculate_z(self):
-        z_result = functions.calculate_z(self.set_x, self.set_y)
-        self.label_Z.config(text=f"Z: {z_result}")
+        self.result_z = functions.calculate_z(self.set_x, self.set_y)
+        self.label_Z.config(text=f"Z: {self.result_z}")
+
+    def save_z(self):
+        if self.result_z:
+            file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
+            if file_path:
+                with open(file_path, "w") as file:
+                    file.write(f"Результат обчислення Z: {self.result_z}")
+        else:
+            messagebox.showerror("Помилка", "Спочатку обчисліть Z!")
+
+
+class Window5:
+        def __init__(self, root, x_set, y_set):
+            self.root = root
+            self.x_set = x_set
+            self.y_set = y_set
+
+            self.window = tk.Toplevel(self.root)
+            self.window.title("Вікно #5")
+            self.window.minsize(width=200, height=250)
+
+            tk.Button(self.window, text="Завантажити множину D", command=self.load_d_set).pack()
+            self.label_expr = tk.Label(self.window, text="Початковий вираз: Невідомо")
+            self.label_expr.pack()
+
+            tk.Button(self.window, text="Завантажити спрощену множину D", command=self.load_simplified_d_set).pack()
+            self.label_simplified_expr = tk.Label(self.window, text="Спрощений вираз: Невідомо")
+            self.label_simplified_expr.pack()
+
+            tk.Button(self.window, text="Завантажити множину Z", command=self.load_z_set).pack()
+            self.label_z = tk.Label(self.window, text="Z: Невідомо")
+            self.label_z.pack()
+
+            tk.Button(self.window, text="Обчислити множину Z", command=self.calculate_z).pack()
+            self.label_calc_z = tk.Label(self.window, text="Обчислений Z: Невідомо")
+            self.label_calc_z.pack()
+
+            tk.Button(self.window, text="Порівняти результати", command=self.compare_results).pack()
+            self.label_comparison = tk.Label(self.window, text="Результат порівняння: Невідомо")
+            self.label_comparison.pack()
+
+        def load_d_set(self):
+            self.d_set = self.load_set_from_file("Початковий вираз", self.label_expr)
+
+        def load_simplified_d_set(self):
+            self.simplified_d_set = self.load_set_from_file("Спрощений вираз", self.label_simplified_expr)
+
+        def load_set_from_file(self, label_text, label):
+            file_path = filedialog.askopenfilename(filetypes=[("Текстові файли", "*.txt"), ("Усі файли", "*.*")])
+            if file_path:
+                try:
+                    with open(file_path, "r") as file:
+                        content = file.read().strip()
+                        content = content.split(":")[-1].strip()
+                        content = content.strip("{}")
+                        set_data = set(map(int, content.split(',')))
+                        label.config(text=f"{label_text}: {set_data}")
+                        return set_data
+                except Exception as e:
+                    messagebox.showerror("Помилка", f"Не вдалося завантажити {label_text}: {e}")
+                    return None
+
+        def load_z_set(self):
+            self.z_set = self.load_set_from_file("Z", self.label_z)
+
+        def calculate_z(self):
+            if hasattr(self, 'x_set') and hasattr(self, 'y_set'):
+                self.calc_z = functions.calculate_z(self.x_set, self.y_set)
+                self.label_calc_z.config(text=f"Обчислений Z: {self.calc_z}")
+            else:
+                messagebox.showerror("Помилка", "Передайте множини X і Y!")
+
+        def compare_results(self):
+            comparison_results = []
+            if hasattr(self, 'd_set') and hasattr(self, 'simplified_d_set'):
+                comparison_results.append(
+                    "D і спрощена D співпадають" if self.d_set == self.simplified_d_set else "D і спрощена D не співпадають")
+            else:
+                comparison_results.append("Завантажте множини D!")
+
+            if hasattr(self, 'calc_z') and hasattr(self, 'z_set'):
+                comparison_results.append(
+                    "Обчислений Z і завантажений Z співпадають" if self.calc_z == self.z_set else "Обчислений Z і завантажений Z не співпадають")
+            else:
+                comparison_results.append("Спочатку завантажте та обчисліть Z!")
+
+            self.label_comparison.config(text="\n".join(comparison_results))
 
 if __name__ == "__main__":
     root = tk.Tk()
