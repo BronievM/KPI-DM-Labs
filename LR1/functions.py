@@ -3,9 +3,6 @@ def calculate_var(group_fullnum, personal_num):
     return (group_fullnum+personal_num%60)%30+1
 
 #деякі стандартні функції python, названі відповідними назвами
-def not_(a, universal):
-    return universal.difference(a)
-
 def union_python(a, b):
     return a | b
 
@@ -64,5 +61,6 @@ def difference(a, b):
 def calculate_z(x, y):
     return difference(x, y)
 
+#для вікна 5
 def calculate_pythonized_z(x, y):
     return difference_python(x, y)

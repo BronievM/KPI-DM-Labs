@@ -82,11 +82,11 @@ class Window1:
     def create_auto_inputs(self):
         frame = self.frame_auto_inputs
         frame.grid_columnconfigure((0, 1, 2, 3), weight=1)
-        tk.Label(frame, text="Кількість елементів A:").grid(row=0, column=0)
+        tk.Label(frame, text="Потужність множини A:").grid(row=0, column=0)
         self.entry_a = tk.Entry(frame, width=5)
         self.entry_a.grid(row=0, column=1)
         self.entry_a.insert(0, "4")
-        tk.Label(frame, text="Кількість елементів B:").grid(row=1, column=0)
+        tk.Label(frame, text="Потужність множини B:").grid(row=1, column=0)
         self.entry_b = tk.Entry(frame, width=5)
         self.entry_b.grid(row=1, column=1)
         self.entry_b.insert(0, "4")
@@ -104,12 +104,14 @@ class Window1:
         tk.Button(frame, text="Згенерувати", command=self.generate_auto_sets).grid(row=4, column=0, columnspan=3, pady=10)
 
     def generate_manual_sets(self):
+        def parse_input(entry):
+            return {int(x) for x in entry.get().split(',') if x.strip().isdigit()}
         try:
-            self.set_a = set(map(int, self.entry_manual_a.get().split(','))) if self.entry_manual_a.get().strip() else set()
-            self.set_b = set(map(int, self.entry_manual_b.get().split(','))) if self.entry_manual_b.get().strip() else set()
-            self.set_c = set(map(int, self.entry_manual_c.get().split(','))) if self.entry_manual_c.get().strip() else set()
+            self.set_a = parse_input(self.entry_manual_a)
+            self.set_b = parse_input(self.entry_manual_b)
+            self.set_c = parse_input(self.entry_manual_c)
             if self.entry_manual_u.get().strip():
-                manual_u = set(map(int, self.entry_manual_u.get().split(',')))
+                manual_u = parse_input(self.entry_manual_u)
                 self.universal_set = self.set_a | self.set_b | self.set_c | manual_u
             else:
                 self.universal_set = set(self.set_a | self.set_b | self.set_c)
@@ -118,12 +120,29 @@ class Window1:
             messagebox.showerror("Помилка", "Введіть коректні значення для множин A, B, C.")
 
     def generate_auto_sets(self):
-        min_val = int(self.entry_range_min.get())
-        max_val = int(self.entry_range_max.get())
+        def safe_sample(population, k):
+            return set(random.sample(population, min(len(population), max(0, k))))
+
+        try:
+            min_val = int(self.entry_range_min.get().strip())
+            max_val = int(self.entry_range_max.get().strip())
+            count_a = int(self.entry_a.get().strip())
+            count_b = int(self.entry_b.get().strip())
+            count_c = int(self.entry_c.get().strip())
+        except ValueError:
+            messagebox.showerror("Помилка", "Введіть коректні числові значення!")
+            return
+
+        if min_val >= max_val:
+            messagebox.showerror("Помилка", "Мінімальне значення має бути меншим за максимальне!")
+            return
         self.universal_set = set(range(min_val, max_val + 1))
-        self.set_a = set(random.sample(list(self.universal_set), int(self.entry_a.get())))
-        self.set_b = set(random.sample(list(self.universal_set), int(self.entry_b.get())))
-        self.set_c = set(random.sample(list(self.universal_set), int(self.entry_c.get())))
+        max_elements = len(self.universal_set)
+        if count_a > max_elements or count_b > max_elements or count_c > max_elements:
+            messagebox.showwarning("Попередження", f"Розмір множини не може перевищувати {max_elements} елементів!")
+        self.set_a = safe_sample(list(self.universal_set), count_a)
+        self.set_b = safe_sample(list(self.universal_set), count_b)
+        self.set_c = safe_sample(list(self.universal_set), count_c)
         self.update_results()
 
     def update_results(self):
@@ -135,31 +154,28 @@ class Window1:
         self.label_U.config(text=f"U: {format_set(self.universal_set)}")
 
     def open_window2(self):
-        if self.are_sets_created():
-            Window2(self.root, self.set_a, self.set_b, self.set_c)
-        else:
-            messagebox.showerror("Помилка", "Спочатку створіть множини!")
+        if not self.are_sets_created():
+            messagebox.showinfo("Попередження", "Не усі множини створені, але ви можете переглянути це вікно.")
+        Window2(self.root, self.set_a, self.set_b, self.set_c)
 
     def open_window3(self):
-        if self.are_sets_created():
-            Window3(self.root, self.set_a, self.set_b, self.set_c)
-        else:
-            messagebox.showerror("Помилка", "Спочатку створіть множини!")
+        if not self.are_sets_created():
+            messagebox.showinfo("Попередження", "Не усі множини створені, але ви можете переглянути це вікно.")
+        Window3(self.root, self.set_a, self.set_b, self.set_c)
 
     def open_window4(self):
-        if self.are_sets_created():
-            Window4(self.root, self.set_a, self.set_b)
-        else:
-            messagebox.showerror("Помилка", "Спочатку створіть множини!")
+        if not self.are_sets_created():
+            messagebox.showinfo("Попередження", "Не усі множини створені, але ви можете переглянути це вікно.")
+        Window4(self.root, self.set_a, self.set_b)
 
     def open_window5(self):
-        if self.are_sets_created():
-            Window5(self.root, self.set_a, self.set_b)
-        else:
-            messagebox.showerror("Помилка", "Спочатку створіть множини!")
+        if not self.are_sets_created():
+            messagebox.showinfo("Попередження", "Не усі множини створені, але ви можете переглянути це вікно.")
+        Window5(self.root, self.set_a, self.set_b)
 
     def are_sets_created(self):
-        return bool(self.set_a and self.set_b and self.set_c)
+        return bool(self.set_a) or bool(self.set_b) or bool(self.set_c)
+
 
 class Window2:
     def __init__(self, root, set_a, set_b, set_c):
@@ -295,7 +311,7 @@ class Window4:
         self.save_z_button.pack()
     def calculate_z(self):
         self.result_z = functions.calculate_z(self.set_x, self.set_y)
-        self.label_Z.config(text=f"X\\Y = Z: {self.result_z}")
+        self.label_Z.config(text=f"X\\Y = Z: {self.result_z if self.result_z else '{}'}")
     def save_z(self):
         if self.result_z:
             file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
@@ -314,18 +330,18 @@ class Window5:
             self.window = tk.Toplevel(self.root)
             self.window.title("Вікно #5")
             self.window.minsize(width=200, height=250)
-            tk.Button(self.window, text="Завантажити множину D", command=self.load_d_set).pack()
             self.label_expr = tk.Label(self.window, text="Початковий вираз: Невідомо")
             self.label_expr.pack()
-            tk.Button(self.window, text="Завантажити спрощену множину D", command=self.load_simplified_d_set).pack()
             self.label_simplified_expr = tk.Label(self.window, text="Спрощений вираз: Невідомо")
             self.label_simplified_expr.pack()
-            tk.Button(self.window, text="Завантажити множину Z", command=self.load_z_set).pack()
             self.label_z = tk.Label(self.window, text="Z: Невідомо")
             self.label_z.pack()
-            tk.Button(self.window, text="Обчислити множину Z", command=self.calculate_z).pack()
             self.label_calc_z = tk.Label(self.window, text="Обчислений Z: Невідомо")
             self.label_calc_z.pack()
+            tk.Button(self.window, text="Завантажити множину D", command=self.load_d_set).pack()
+            tk.Button(self.window, text="Завантажити спрощену множину D", command=self.load_simplified_d_set).pack()
+            tk.Button(self.window, text="Завантажити множину Z", command=self.load_z_set).pack()
+            tk.Button(self.window, text="Обчислити множину Z", command=self.calculate_z).pack()
             tk.Button(self.window, text="Порівняти результати", command=self.compare_results).pack()
             self.label_comparison = tk.Label(self.window, text="Результат порівняння: Невідомо")
             self.label_comparison.pack()
@@ -342,10 +358,17 @@ class Window5:
                 try:
                     with open(file_path, "r") as file:
                         content = file.read().strip()
-                        content = content.split(":")[-1].strip()
-                        content = content.strip("{}")
-                        set_data = set(map(int, content.split(',')))
-                        label.config(text=f"{label_text}: {set_data}")
+                        start_index = content.find("{")
+                        end_index = content.find("}", start_index)
+                        if start_index != -1 and end_index != -1:
+                            numbers = content[start_index + 1:end_index].strip()
+                            if numbers:
+                                set_data = set(map(int, filter(None, numbers.split(','))))
+                            else:
+                                set_data = set()
+                        else:
+                            set_data = set()
+                        label.config(text=f"{label_text}: {set_data if set_data else '{}'}")
                         return set_data
                 except Exception as e:
                     messagebox.showerror("Помилка", f"Не вдалося завантажити {label_text}: {e}")
@@ -356,10 +379,10 @@ class Window5:
 
         def calculate_z(self):
             if hasattr(self, 'x_set') and hasattr(self, 'y_set'):
-                self.calc_z = functions.calculate_z(self.x_set, self.y_set)
-                self.label_calc_z.config(text=f"Обчислений Z: {self.calc_z}")
+                self.calc_z = functions.calculate_pythonized_z(self.x_set, self.y_set)
+                self.label_calc_z.config(text=f"Обчислений Z: {self.calc_z if self.calc_z else '{}'}")
             else:
-                messagebox.showerror("Помилка", "Передайте множини X і Y!")
+                messagebox.showerror("Помилка", "Створіть множини X і Y (A, B)!")
 
         def compare_results(self):
             comparison_results = []
