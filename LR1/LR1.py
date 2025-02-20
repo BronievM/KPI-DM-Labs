@@ -45,9 +45,6 @@ class Window1:
         self.create_auto_inputs()
         self.create_manual_inputs()
         self.toggle_mode()
-        self.create_result_labels()
-
-    def create_result_labels(self):
         frame_results = tk.Frame(self.root)
         frame_results.pack(pady=10)
         self.label_A = tk.Label(frame_results, text="A: {}")
@@ -108,11 +105,12 @@ class Window1:
 
     def generate_manual_sets(self):
         try:
-            self.set_a = set(map(int, self.entry_manual_a.get().split(',')))
-            self.set_b = set(map(int, self.entry_manual_b.get().split(',')))
-            self.set_c = set(map(int, self.entry_manual_c.get().split(',')))
-            if self.entry_manual_u.get().strip() != "":
-                self.universal_set = set(map(int, self.entry_manual_u.get().split(',')))
+            self.set_a = set(map(int, self.entry_manual_a.get().split(','))) if self.entry_manual_a.get().strip() else set()
+            self.set_b = set(map(int, self.entry_manual_b.get().split(','))) if self.entry_manual_b.get().strip() else set()
+            self.set_c = set(map(int, self.entry_manual_c.get().split(','))) if self.entry_manual_c.get().strip() else set()
+            if self.entry_manual_u.get().strip():
+                manual_u = set(map(int, self.entry_manual_u.get().split(',')))
+                self.universal_set = self.set_a | self.set_b | self.set_c | manual_u
             else:
                 self.universal_set = set(self.set_a | self.set_b | self.set_c)
             self.update_results()
@@ -129,10 +127,12 @@ class Window1:
         self.update_results()
 
     def update_results(self):
-        self.label_A.config(text=f"A: {self.set_a}")
-        self.label_B.config(text=f"B: {self.set_b}")
-        self.label_C.config(text=f"C: {self.set_c}")
-        self.label_U.config(text=f"U: {self.universal_set}")
+        def format_set(s):
+            return "{}" if not s else str(s)
+        self.label_A.config(text=f"A: {format_set(self.set_a)}")
+        self.label_B.config(text=f"B: {format_set(self.set_b)}")
+        self.label_C.config(text=f"C: {format_set(self.set_c)}")
+        self.label_U.config(text=f"U: {format_set(self.universal_set)}")
 
     def open_window2(self):
         if self.are_sets_created():
@@ -287,7 +287,7 @@ class Window4:
         self.label_X.pack()
         self.label_Y = tk.Label(self.window, text=f"Y = {self.set_y}")
         self.label_Y.pack()
-        self.label_Z = tk.Label(self.window, text="Z: ")
+        self.label_Z = tk.Label(self.window, text="X\\Y = Z: ")
         self.label_Z.pack()
         self.calculate_button = tk.Button(self.window, text="Обчислити Z", command=self.calculate_z)
         self.calculate_button.pack()
@@ -295,7 +295,7 @@ class Window4:
         self.save_z_button.pack()
     def calculate_z(self):
         self.result_z = functions.calculate_z(self.set_x, self.set_y)
-        self.label_Z.config(text=f"Z: {self.result_z}")
+        self.label_Z.config(text=f"X\\Y = Z: {self.result_z}")
     def save_z(self):
         if self.result_z:
             file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
