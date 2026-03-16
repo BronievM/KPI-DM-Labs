@@ -1,0 +1,13 @@
+# Python bytecode (кеш)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Віртуальні середовища
+.venv/
+venv/
+ENV/
+
+# Налаштування IDE
+.idea/
+.vscode/
